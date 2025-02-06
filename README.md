@@ -71,5 +71,5 @@ We welcome contributions from the community! To contribute:
 4. Push the branch and create a Pull Request.
 
 ## Contact
-For any issues or feature requests, please open an issue on GitHub or contact [dinithp132@gmail.com].
+For any issues or feature requests, please open an issue on GitHub or contact dinithp132@gmail.com .
 
