@@ -18,7 +18,7 @@ Flutter Bluetooth Terminal is an enterprise-level Flutter application that allow
 ## Installation
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/flutter-bluetooth-terminal.git
+git clone https://github.com/Dinith132/Flutter-Bluetooth-Terminal-Application.git
 cd flutter-bluetooth-terminal
 ```
 
