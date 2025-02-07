@@ -86,8 +86,14 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AIO'),
-        backgroundColor: const Color.fromARGB(255, 123, 124, 125),
+        title: const Text('BT Terminal'),
+        backgroundColor: const Color.fromARGB(255, 234, 234, 234),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -100,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           const Divider(),
           if (scanResults.isEmpty)
-        const Center(child: Text("No devices"))
+        const Center(child: Text("No devices Found"))
           else
         for (var (index, result) in scanResults.indexed)
           ListTile(
@@ -148,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
         },
         label: Text(_isScanning ? "Scanning" : "Scan"),
         icon: Icon(_isScanning ? Icons.bluetooth_searching : Icons.bluetooth),
-        backgroundColor: Colors.grey,
+        backgroundColor: const Color.fromARGB(255, 224, 224, 224),
       ),);
   }
 }
