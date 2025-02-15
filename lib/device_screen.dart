@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_classic/flutter_blue_classic.dart';
+import 'package:flutter_blue_classic_example/map_page.dart';
 
 class DeviceScreen extends StatefulWidget {
   const DeviceScreen({super.key, required this.connection});
@@ -75,11 +76,17 @@ class _DeviceScreenState extends State<DeviceScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.map),
-            onPressed: () {},
-          ),
+                        onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MapPage()),
+              );
+            },
+            ),
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {},
+            
           ),
         ],
 
