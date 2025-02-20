@@ -29,7 +29,8 @@ class MapPage extends StatelessWidget {
                 point: LatLng(9.3529, 80.4094),
                 child: const Icon(
                   Icons.location_on,
-                  color: Colors.red,
+                  color: Colors.red, //
+
                   size: 40,
                 ),
               ),
