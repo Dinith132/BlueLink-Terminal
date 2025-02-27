@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_classic/flutter_blue_classic.dart';
+import 'package:flutter_blue_classic_example/database_page.dart';
 import 'package:flutter_blue_classic_example/map_page.dart';
+import 'database_helper.dart';
 
 class DeviceScreen extends StatefulWidget {
   const DeviceScreen({super.key, required this.connection});
@@ -19,19 +21,31 @@ class _DeviceScreenState extends State<DeviceScreen> {
   TextEditingController _controller = TextEditingController();
   ScrollController _scrollController = ScrollController();
   StreamSubscription? _readSubscription;
-  final List<Map<String, String>> _messages = [];
+  List<Map<String, dynamic>> _messages = [];
 
   @override
   void initState() {
+    super.initState();
+    _loadMessages();
     _readSubscription = widget.connection.input?.listen((event) {
       if (mounted) {
         setState(() {
-          _messages.add({'sender': 'device', 'message': utf8.decode(event)});
+          _storeMessage({'sender': 'device', 'message': utf8.decode(event)});
           _scrollToBottom();
         });
       }
     });
-    super.initState();
+  }
+
+  Future<void> _loadMessages() async {
+    _messages = await DatabaseHelper().getMessages();
+    setState(() {});
+  }
+
+  Future<void> _storeMessage(Map<String, String> message) async {
+    await DatabaseHelper().insertMessage(message);
+    _messages = await DatabaseHelper().getMessages();
+    setState(() {});
   }
 
   @override
@@ -44,7 +58,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   void _sendMessage(String message) {
     setState(() {
-      _messages.add({'sender': 'user', 'message': message});
+      _storeMessage({'sender': 'user', 'message': message});
       _scrollToBottom();
     });
     try {
@@ -76,20 +90,23 @@ class _DeviceScreenState extends State<DeviceScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.map),
-                        onPressed: () {
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const MapPage()),
               );
             },
-            ),
+          ),
           IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-            
+            icon: Icon(Icons.more),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DatabasePage()),
+              );
+            },
           ),
         ],
-
       ),
       body: ListView(
         children: [
@@ -123,10 +140,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: message['message']!=null&&message['message']!.isNotEmpty
-                          ?Text(message['message']!,style:TextStyle(fontSize:18))
-                          :SizedBox(),
-
+                      child: message['message'] != null && message['message']!.isNotEmpty
+                          ? Text(message['message']!, style: TextStyle(fontSize: 18))
+                          : SizedBox(),
                     ),
                   ),
               ],

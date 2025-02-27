@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     initPlatformState();
   }
-
+    
   Future<void> initPlatformState() async {
     BluetoothAdapterState adapterState = _adapterState;
 
