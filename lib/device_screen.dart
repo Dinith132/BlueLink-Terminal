@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +22,33 @@ class _DeviceScreenState extends State<DeviceScreen> {
   ScrollController _scrollController = ScrollController();
   StreamSubscription? _readSubscription;
   final List<Map<String, String>> _messages = [];
+  final Map<String, dynamic> _users = {};
+  final List<Map<String, Double>> _ourLocation = [];
 
   @override
   void initState() {
     _readSubscription = widget.connection.input?.listen((event) {
       if (mounted) {
         setState(() {
-          _messages.add({'sender': 'device', 'message': utf8.decode(event)});
+          String jsonString = utf8.decode(event);
+
+          Map<String, dynamic> jsonData = jsonDecode(jsonString);
+          
+          Map<String, dynamic> message = jsonData['message'];
+          List<dynamic> users = jsonData['users'];
+          Map<String, dynamic> ourLocation = jsonData['our_location'];
+
+          for (var user in users) {
+            if(_users.containsKey(user['id'])) {
+              _users.update(user['id'], user["location"]);
+            }else{
+              _users.putIfAbsent(user['id'], user["location"]);
+            }
+          }
+          _ourLocation.add({'latitude': ourLocation['latitude'], 'longitude': ourLocation['longitude']});
+
+          //
+          _messages.add({'sender': 'device', 'message': message["text"] });
           _scrollToBottom();
         });
       }
