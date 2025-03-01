@@ -44,4 +44,24 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('messages');
   }
+
+  Future<Map<String, dynamic>?> getLastMessage() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'messages',
+      orderBy: 'id DESC',
+      limit: 1,
+    );
+    if (result.isNotEmpty) {
+      return result.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> clearMessages() async {
+    final db = await database;
+    await db.delete('messages');
+    _messageStreamController.add(null);
+  }
 }

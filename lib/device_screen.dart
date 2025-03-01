@@ -48,6 +48,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
     setState(() {});
   }
 
+  Future<void> _clearMessages() async {
+    await DatabaseHelper().clearMessages();
+    _messages = [];
+    setState(() {});
+  }
+
   @override
   void dispose() {
     widget.connection.dispose();
@@ -166,6 +172,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
                   _controller.clear();
                 },
                 child: const Text("Send"),
+              ),
+              SizedBox(width: 16.0),
+              ElevatedButton(
+                onPressed: _clearMessages,
+                child: const Text("Clear"),
               ),
             ],
           ),
